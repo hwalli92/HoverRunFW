@@ -39,8 +39,8 @@ The code was compiled with GNU arm-none-eabi-gcc 4.9.3 under ubuntu 16.04 and sh
 To build, clone this repository and run make:
 
 ```
-$ https://github.com/hwalli92/HoverRunFW.git
-$ make
+https://github.com/hwalli92/HoverRunFW.git
+make
 ```
 
 Only boards with the AT32F413RCT7 controller are supported.
@@ -48,7 +48,7 @@ Only boards with the AT32F413RCT7 controller are supported.
 ---
 
 ## Hardware (Needs Update)
-![otter](pinout.png)
+![otter](Docs/pinout.png)
 
 ---
 
