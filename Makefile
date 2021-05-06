@@ -31,7 +31,6 @@ Drivers/HAL_Driver/src/at32f4xx_dma.c \
 Drivers/HAL_Driver/src/at32f4xx_exti.c \
 Drivers/HAL_Driver/src/misc.c \
 Src/setup.c \
-Src/control.c \
 Src/main.c \
 Src/bldc.c \
 Src/comms.c \
