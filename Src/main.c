@@ -55,8 +55,8 @@ int cmd3;
 
 typedef struct
 {
-  int16_t steer;
-  int16_t speed;
+  int16_t speedL;
+  int16_t speedR;
   //uint32_t crc;
 } Serialcommand;
 
@@ -218,8 +218,11 @@ int main(void)
 
     uart_handle_command();
 
-    cmd1 = CLAMP((int16_t)command.steer, -1000, 1000);
-    cmd2 = CLAMP((int16_t)command.speed, -1000, 1000);
+    cmd1 = CLAMP((int16_t)command.speedL, -1000, 1000);
+    cmd2 = CLAMP((int16_t)command.speedR, -1000, 1000);
+
+    speedL = speedL * (1.0 - FILTER) + cmd1 * FILTER;
+    speedR = speedR * (1.0 - FILTER) + cmd2 * FILTER;
 
     pwmr = -60;
     pwml = 60;
@@ -243,12 +246,11 @@ int main(void)
       // ####### DEBUG SERIAL OUT #######
       setScopeChannel(0, (int)speedR);                    // 1: output speed: 0-1000
       setScopeChannel(1, (int)speedL);                    // 2: output speed: 0-1000
-      setScopeChannel(2, (int)speedR);                    // 3: output speed: 0-1000
-      setScopeChannel(3, (int)speedL);                    // 4: output speed: 0-1000
-      setScopeChannel(4, (int)adc_buffer.batt1);          // 5: for battery voltage calibration
-      setScopeChannel(5, (int)(batteryVoltage * 100.0f)); // 6: for verifying battery voltage calibration
-      setScopeChannel(6, (int)board_temp_adc_filtered);   // 7: for board temperature calibration
-      setScopeChannel(7, (int)board_temp_deg_c);          // 8: for verifying board temperature calibration
+      setScopeChannel(2, (int)batteryVoltage);            // 3: battery voltage
+      setScopeChannel(2, (int)adc_buffer.batt1);          // 4: for battery voltage calibration
+      setScopeChannel(3, (int)(batteryVoltage * 100.0f)); // 5: for verifying battery voltage calibration
+      setScopeChannel(4, (int)board_temp_adc_filtered);   // 6: for board temperature calibration
+      setScopeChannel(5, (int)board_temp_deg_c);          // 7: for verifying board temperature calibration
     }
 
     // ####### POWEROFF BY POWER-BUTTON #######
@@ -316,13 +318,10 @@ void SystemClock_Config(void)
   NVIC_SetPriority(SysTick_IRQn, 0);
 }
 
-void set_steer(int v)
+void set_speed(int vr, int vl)
 {
-  command.steer = v;
-}
-void set_speed(int v)
-{
-  command.speed = v;
+  command.speedL = vl;
+  command.speedR = vr;
 }
 void update_timeout()
 {

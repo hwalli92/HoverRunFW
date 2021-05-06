@@ -102,24 +102,22 @@ void uart_handle_command()
 		{
 			update_timeout();
 			uart_put_string("starting motor test" NL);
-			set_steer(0);
-			set_speed(100);
+			set_speed(100, 100);
 		}
 		else if (startswith(uart_command, "move"))
 		{
 			update_timeout();
-			int steer;
-			int speed;
+			int speedR;
+			int speedL;
 			int chksum;
-			sscanf(uart_command, "move %d %d %d", &steer, &speed, &chksum);
-			if (chksum == steer + (speed * 1000))
+			sscanf(uart_command, "move %d %d %d", &speedR, &speedL, &chksum);
+			if (chksum == (speedR + speedL) * 1000)
 			{
 				char out[128];
-				sprintf(out, "setting motors steer:%d speed:%d" NL, steer,
-						speed);
+				sprintf(out, "setting motors right:%d left:%d" NL, speedR,
+						speedL);
 				uart_put_string(out);
-				set_steer(steer);
-				set_speed(speed);
+				set_speed(speedR, speedL);
 			}
 			else
 			{
@@ -130,8 +128,7 @@ void uart_handle_command()
 		{
 			update_timeout();
 			uart_put_string("stopping motors" NL);
-			set_steer(0);
-			set_speed(0);
+			set_speed(0, 0);
 		}
 		else if (!strcmp(uart_command, "poweroff"))
 		{
