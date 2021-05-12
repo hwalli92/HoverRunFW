@@ -34,6 +34,7 @@ void consoleLog(char *message);
 void setScopeChannel(uint8_t ch, int16_t val);
 
 char *get_diagnostic_info();
-void set_speed(int vr, int vl);
+void set_steer(int w);
+void set_speed(int v);
 void poweroff();
 void update_timeout();
