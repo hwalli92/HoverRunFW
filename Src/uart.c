@@ -126,6 +126,13 @@ void uart_handle_command()
 				uart_put_string("checksum error" NL);
 			}
 		}
+		else if (!strcmp(uart_command, "start"))
+		{
+			update_timeout();
+			uart_put_string("starting motors" NL);
+			set_steer(100);
+			set_speed(0);
+		}
 		else if (!strcmp(uart_command, "stop"))
 		{
 			update_timeout();
