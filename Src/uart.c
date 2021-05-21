@@ -130,8 +130,8 @@ void uart_handle_command()
 		{
 			update_timeout();
 			uart_put_string("starting motors" NL);
-			set_steer(100);
-			set_speed(0);
+			set_steer(0);
+			set_speed(100);
 		}
 		else if (!strcmp(uart_command, "stop"))
 		{
