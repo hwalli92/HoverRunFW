@@ -225,9 +225,6 @@ int main(void)
     steer = steer * (1.0 - FILTER) + cmd1 * FILTER;
     speed = speed * (1.0 - FILTER) + cmd2 * FILTER;
 
-    pwmr = -60;
-    pwml = 60;
-
     // ####### MIXER #######
     speedR = CLAMP(speed * local_speed_coefficent - steer * local_steer_coefficent, -1000, 1000);
     speedL = CLAMP(speed * local_speed_coefficent + steer * local_steer_coefficent, -1000, 1000);
@@ -235,8 +232,8 @@ int main(void)
     // ####### SET OUTPUTS #######
     if ((speedL < lastSpeedL + 50 && speedL > lastSpeedL - 50) && (speedR < lastSpeedR + 50 && speedR > lastSpeedR - 50))
     {
-      pwmr = -speedR;
-      pwml = speedL;
+      pwmr = speedR;
+      pwml = -speedL;
     }
 
     lastSpeedL = speedL;
