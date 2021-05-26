@@ -246,13 +246,14 @@ int main(void)
       board_temp_deg_c = ((float)TEMP_CAL_HIGH_DEG_C - (float)TEMP_CAL_LOW_DEG_C) / ((float)TEMP_CAL_HIGH_ADC - (float)TEMP_CAL_LOW_ADC) * (board_temp_adc_filtered - (float)TEMP_CAL_LOW_ADC) + (float)TEMP_CAL_LOW_DEG_C;
 
       // ####### DEBUG SERIAL OUT #######
-      setScopeChannel(0, (int)speedR);                    // 1: output speed: 0-1000
-      setScopeChannel(1, (int)speedL);                    // 2: output speed: 0-1000
-      setScopeChannel(2, (int)batteryVoltage);            // 3: battery voltage
-      setScopeChannel(3, (int)adc_buffer.batt1);          // 4: for battery voltage calibration
-      setScopeChannel(4, (int)(batteryVoltage * 100.0f)); // 5: for verifying battery voltage calibration
-      setScopeChannel(5, (int)board_temp_adc_filtered);   // 6: for board temperature calibration
-      setScopeChannel(6, (int)board_temp_deg_c);          // 7: for verifying board temperature calibration
+      setScopeChannel(0, (int)speedR);                    // 0: output speed: 0-1000
+      setScopeChannel(1, (int)speedL);                    // 1: output speed: 0-1000
+      setScopeChannel(2, (int)steer);                     // 2: steer value: 0-1000
+      setScopeChannel(3, (int)batteryVoltage);            // 3: battery voltage
+      setScopeChannel(4, (int)adc_buffer.batt1);          // 4: for battery voltage calibration
+      setScopeChannel(5, (int)(batteryVoltage * 100.0f)); // 5: for verifying battery voltage calibration
+      setScopeChannel(6, (int)board_temp_adc_filtered);   // 6: for board temperature calibration
+      setScopeChannel(7, (int)board_temp_deg_c);          // 7: for verifying board temperature calibration
     }
 
     // ####### POWEROFF BY POWER-BUTTON #######
