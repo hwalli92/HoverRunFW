@@ -226,8 +226,8 @@ int main(void)
     speed = speed * (1.0 - FILTER) + cmd2 * FILTER;
 
     // ####### MIXER #######
-    speedR = CLAMP(speed * local_speed_coefficent - steer * local_steer_coefficent, -1000, 1000);
-    speedL = CLAMP(speed * local_speed_coefficent + steer * local_steer_coefficent, -1000, 1000);
+    speedR = CLAMP(speed * local_speed_coefficent + steer * local_steer_coefficent, -1000, 1000);
+    speedL = CLAMP(speed * local_speed_coefficent - steer * local_steer_coefficent, -1000, 1000);
 
     // ####### SET OUTPUTS #######
     if ((speedL < lastSpeedL + 50 && speedL > lastSpeedL - 50) && (speedR < lastSpeedR + 50 && speedR > lastSpeedR - 50))
