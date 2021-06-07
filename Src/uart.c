@@ -17,19 +17,19 @@ void uart_initialize()
 	USART_InitType USART_InitStruct = {0};
 	NVIC_InitType NVIC_InitStruct = {0};
 
-	RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_USART3, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_GPIOB, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_USART2, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_GPIOA, ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPERIPH_DMA1, ENABLE);
 
-	GPIO_InitStruct.GPIO_Pins = GPIO_Pins_10;
+	GPIO_InitStruct.GPIO_Pins = GPIO_Pins_2;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_InitStruct.GPIO_MaxSpeed = GPIO_MaxSpeed_50MHz;
-	GPIO_Init(GPIOB, &GPIO_InitStruct);
+	GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-	GPIO_InitStruct.GPIO_Pins = GPIO_Pins_11;
+	GPIO_InitStruct.GPIO_Pins = GPIO_Pins_3;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_InitStruct.GPIO_MaxSpeed = GPIO_MaxSpeed_50MHz;
-	GPIO_Init(GPIOB, &GPIO_InitStruct);
+	GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 	USART_InitStruct.USART_BaudRate = CONTROL_UART_BAUD;
 	USART_InitStruct.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
@@ -37,23 +37,23 @@ void uart_initialize()
 	USART_InitStruct.USART_Parity = USART_Parity_No;
 	USART_InitStruct.USART_StopBits = USART_StopBits_1;
 	USART_InitStruct.USART_WordLength = USART_WordLength_8b;
-	USART_Init(USART3, &USART_InitStruct);
+	USART_Init(USART2, &USART_InitStruct);
 
-	USART_INTConfig(USART3, USART_IT_RXNE, ENABLE);
-	USART_INTConfig(USART3, USART_IT_TXE, ENABLE);
-	USART_Cmd(USART3, ENABLE);
+	USART_INTConfig(USART2, USART_IT_RXNE, ENABLE);
+	USART_INTConfig(USART2, USART_IT_TXE, ENABLE);
+	USART_Cmd(USART2, ENABLE);
 
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-	NVIC_InitStruct.NVIC_IRQChannel = USART3_IRQn;
+	NVIC_InitStruct.NVIC_IRQChannel = USART2_IRQn;
 	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
 	NVIC_InitStruct.NVIC_IRQChannelSubPriority = 1;
 	NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStruct);
 }
 
-void USART3_IRQHandler(void)
+void USART2_IRQHandler(void)
 {
-	if (USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)
+	if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
 	{
 		uint8_t head_temp = uart_rx_circBuff.head + 1;
 
@@ -62,20 +62,20 @@ void USART3_IRQHandler(void)
 
 		if (head_temp == uart_rx_circBuff.tail)
 		{
-			USART_ClearITPendingBit(USART3, USART_IT_RXNE);
+			USART_ClearITPendingBit(USART2, USART_IT_RXNE);
 		}
 		else
 		{
-			uart_rx_circBuff.buffer[head_temp] = USART_ReceiveData(USART3);
+			uart_rx_circBuff.buffer[head_temp] = USART_ReceiveData(USART2);
 			uart_rx_circBuff.head = head_temp;
 		}
 	}
 
-	if (USART_GetITStatus(USART3, USART_IT_TXE) != RESET)
+	if (USART_GetITStatus(USART2, USART_IT_TXE) != RESET)
 	{
 		if (uart_tx_circBuff.head == uart_tx_circBuff.tail)
 		{
-			USART_INTConfig(USART3, USART_IT_TXE, DISABLE);
+			USART_INTConfig(USART2, USART_IT_TXE, DISABLE);
 		}
 		else
 		{
@@ -84,7 +84,7 @@ void USART3_IRQHandler(void)
 			if (uart_tx_circBuff.tail == UART_TX_BUF_SIZE)
 				uart_tx_circBuff.tail = 0;
 
-			USART_SendData(USART3,
+			USART_SendData(USART2,
 						   uart_tx_circBuff.buffer[uart_tx_circBuff.tail]);
 		}
 	}
@@ -180,7 +180,7 @@ int8_t uart_put_char(char data)
 	uart_tx_circBuff.buffer[head_temp] = data;
 	uart_tx_circBuff.head = head_temp;
 
-	USART_INTConfig(USART3, USART_IT_TXE, ENABLE);
+	USART_INTConfig(USART2, USART_IT_TXE, ENABLE);
 
 	return 0;
 }
