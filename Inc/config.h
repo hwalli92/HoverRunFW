@@ -40,7 +40,7 @@
 // Quiet mode will, most of the time, flash the LED instead of using the
 // buzzer. However the buzzer will always be used when in a dangerous
 // situation like low battery or overheating.
-#define QUIET_MODE 0 // whether to flash LED instead of beeping
+//#define QUIET_MODE 0 // whether to flash LED instead of beeping
 
 #define INACTIVITY_TIMEOUT 8 // minutes of not driving until poweroff. it is not very precise.
 

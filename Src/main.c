@@ -24,6 +24,7 @@
 #include "setup.h"
 #include "config.h"
 #include "uart.h"
+#include "i2c.h"
 
 // ###############################################################################
 #include "BLDC_controller.h" /* Model's header file */
@@ -61,6 +62,8 @@ typedef struct
 } Serialcommand;
 
 volatile Serialcommand command;
+
+MPU6050Data MPUData;
 
 uint8_t button1, button2;
 
@@ -154,12 +157,16 @@ int main(void)
   SystemClock_Config();
   RCC_AHBPeriphClockCmd(RCC_AHBPERIPH_DMA1, DISABLE);
 
+  I2C2_Init();
   MX_GPIO_Init();
   MX_TIM_Init();
   MX_ADC1_Init();
   MX_ADC2_Init();
 
   uart_initialize();
+
+  uint8_t check;
+  check = MPU6050_Init();
 
   GPIO_WriteBit(OFF_PORT, OFF_PIN, 1);
 
@@ -217,6 +224,9 @@ int main(void)
     delay(DELAY_IN_MAIN_LOOP); //delay in ms
 
     uart_handle_command();
+    //MPU6050_AccelRead(&MPUData);
+    //MPU6050_GyroRead(&MPUData);
+    MPU6050_Read(&MPUData);
 
     cmd1 = CLAMP((int16_t)command.steer, -1000, 1000);
     cmd2 = CLAMP((int16_t)command.speed, -1000, 1000);
@@ -251,12 +261,12 @@ int main(void)
       setScopeChannel(2, (int)steer);            // 2: steer value: 0-1000
       setScopeChannel(3, (int)batteryVoltage);   // 3: battery voltage
       setScopeChannel(4, (int)adc_buffer.batt1); // 4: for battery voltage calibration
-      setScopeChannel(5, (int)rtU_Left.b_hallA); // 5: for verifying battery voltage calibration
-      setScopeChannel(6, (int)rtU_Left.b_hallB); // 6: for board temperature calibration
-      setScopeChannel(7, (int)rtU_Left.b_hallC); // 7: for verifying board temperature calibration
-      setScopeChannel(8, (int)rtU_Right.b_hallA);
-      setScopeChannel(9, (int)rtU_Right.b_hallB);
-      setScopeChannel(10, (int)rtU_Right.b_hallC);
+      setScopeChannel(5, (int)MPUData.Accel_X);  // 5: for verifying battery voltage calibration
+      setScopeChannel(6, (int)MPUData.Accel_Y);  // 6: for board temperature calibration
+      setScopeChannel(7, (int)MPUData.Accel_Z);  // 7: for verifying board temperature calibration
+      setScopeChannel(8, (int)MPUData.Gyro_X);
+      setScopeChannel(9, (int)MPUData.Gyro_Y);
+      setScopeChannel(10, (int)MPUData.Gyro_Z);
     }
 
     // ####### POWEROFF BY POWER-BUTTON #######
