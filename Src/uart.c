@@ -24,12 +24,12 @@ void uart_initialize()
 	GPIO_InitStruct.GPIO_Pins = GPIO_Pins_10;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_InitStruct.GPIO_MaxSpeed = GPIO_MaxSpeed_50MHz;
-	GPIO_Init(GPIOA, &GPIO_InitStruct);
+	GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 	GPIO_InitStruct.GPIO_Pins = GPIO_Pins_11;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_InitStruct.GPIO_MaxSpeed = GPIO_MaxSpeed_50MHz;
-	GPIO_Init(GPIOA, &GPIO_InitStruct);
+	GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 	USART_InitStruct.USART_BaudRate = CONTROL_UART_BAUD;
 	USART_InitStruct.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
