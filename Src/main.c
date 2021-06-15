@@ -66,6 +66,7 @@ uint8_t button1, button2;
 
 int steer; // global variable for steering. -1000 to 1000
 int speed; // global variable for speed. -1000 to 1000
+int counter = 0;
 
 float local_speed_coefficent;
 float local_steer_coefficent;
@@ -158,6 +159,7 @@ int main(void)
   MX_TIM_Init();
   MX_ADC1_Init();
   MX_ADC2_Init();
+  PB_Init();
 
   uart_initialize();
 
@@ -251,7 +253,7 @@ int main(void)
       setScopeChannel(2, (int)steer);            // 2: steer value: 0-1000
       setScopeChannel(3, (int)batteryVoltage);   // 3: battery voltage
       setScopeChannel(4, (int)adc_buffer.batt1); // 4: for battery voltage calibration
-      setScopeChannel(5, (int)rtU_Left.b_hallA); // 5: for verifying battery voltage calibration
+      setScopeChannel(5, (int)counter);          // 5: for verifying battery voltage calibration
       setScopeChannel(6, (int)rtU_Left.b_hallB); // 6: for board temperature calibration
       setScopeChannel(7, (int)rtU_Left.b_hallC); // 7: for verifying board temperature calibration
       setScopeChannel(8, (int)rtU_Right.b_hallA);
@@ -337,4 +339,10 @@ void set_speed(int v)
 void update_timeout()
 {
   inactivity_timeout_counter = 0;
+}
+
+void inc_counter()
+{
+  counter++;
+  set_speed(counter);
 }

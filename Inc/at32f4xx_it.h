@@ -7,7 +7,6 @@
  **************************************************************************
  */
 
-
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __AT32F4xx_IT_H
 #define __AT32F4xx_IT_H
@@ -29,9 +28,8 @@ void SVC_Handler(void);
 void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
+void EXTI2_IRQHandler(void);
 void DMA1_Channel1_IRQHandler(void);
 void DMA2_Channel4_5_IRQHandler(void);
 
 #endif /* __AT32F4xx_IT_H */
-
-

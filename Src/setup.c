@@ -42,6 +42,34 @@ pb10 usart3 dma1 channel2/3
 
 volatile adc_buf_t adc_buffer;
 
+void PB_Init(void)
+{
+  GPIO_InitType PB_GPIO = {0};
+  EXTI_InitType PB_EXTI = {0};
+  NVIC_InitType PB_NVIC = {0};
+
+  RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_GPIOB, ENABLE);
+
+  PB_GPIO.GPIO_Pins = GPIO_Pins_2;
+  PB_GPIO.GPIO_Mode = GPIO_Mode_IN_PU;
+  PB_GPIO.GPIO_MaxSpeed = GPIO_MaxSpeed_50MHz;
+  GPIO_Init(GPIOB, &PB_GPIO);
+
+  GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinsSource2);
+
+  PB_EXTI.EXTI_Line = EXTI_Line2;
+  PB_EXTI.EXTI_Mode = EXTI_Mode_Interrupt;
+  PB_EXTI.EXTI_Trigger = EXTI_Trigger_Rising;
+  PB_EXTI.EXTI_LineEnable = ENABLE;
+  EXTI_Init(&PB_EXTI);
+
+  PB_NVIC.NVIC_IRQChannel = EXTI2_IRQn;
+  PB_NVIC.NVIC_IRQChannelPreemptionPriority = 1;
+  PB_NVIC.NVIC_IRQChannelSubPriority = 1;
+  PB_NVIC.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&PB_NVIC);
+}
+
 void MX_GPIO_Init(void)
 {
   GPIO_InitType GPIO_InitStruct = {0};

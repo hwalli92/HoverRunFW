@@ -24,6 +24,7 @@
 #include "at32f4xx.h"
 #include "config.h"
 
+void PB_Init(void);
 void MX_GPIO_Init(void);
 void MX_TIM_Init(void);
 void MX_ADC1_Init(void);
@@ -38,3 +39,4 @@ void set_steer(int w);
 void set_speed(int v);
 void poweroff();
 void update_timeout();
+void inc_counter();

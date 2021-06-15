@@ -109,3 +109,12 @@ void SysTick_Handler(void)
 {
   systick_counter++;
 }
+
+void EXTI2_IRQHandler(void)
+{
+  if (EXTI_GetIntStatus(EXTI_Line2) != RESET)
+  {
+    inc_counter();
+    EXTI_ClearIntPendingBit(EXTI_Line2);
+  }
+}
