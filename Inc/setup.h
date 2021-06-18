@@ -38,3 +38,4 @@ void set_steer(int w);
 void set_speed(int v);
 void poweroff();
 void update_timeout();
+void set_angle(double gyrox, double accx, double cfangle);

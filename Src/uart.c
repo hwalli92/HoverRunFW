@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "uart.h"
 
@@ -126,12 +127,21 @@ void uart_handle_command()
 				uart_put_string("checksum error" NL);
 			}
 		}
-		else if (!strcmp(uart_command, "start"))
+		else if (startswith(uart_command, "mpu"))
 		{
 			update_timeout();
-			//uart_put_string("starting motors" NL);
-			set_steer(0);
-			set_speed(100);
+			char strgyrox[20];
+			char straccx[20];
+			char strcfanglex[20];
+			//char out[128];
+			sscanf(uart_command, "mpu %s %s %s", &strgyrox, &straccx, &strcfanglex);
+			double gyrox = atof(strgyrox);
+			double accx = atof(straccx);
+			double cfanglex = atof(strcfanglex);
+			// sprintf(out, "setting motors from mpu speed: %f steer: %f" NL, gyrox,
+			// 		accx);
+			// uart_put_string(out);
+			set_angle(gyrox, accx, cfanglex);
 		}
 		else if (!strcmp(uart_command, "stop"))
 		{

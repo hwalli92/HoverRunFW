@@ -62,6 +62,15 @@ typedef struct
 
 volatile Serialcommand command;
 
+typedef struct
+{
+  double gyrox;
+  double accx;
+  double cfanglex;
+} MPU6050;
+
+volatile MPU6050 mpu6050;
+
 uint8_t button1, button2;
 
 int steer; // global variable for steering. -1000 to 1000
@@ -251,12 +260,9 @@ int main(void)
       setScopeChannel(2, (int)steer);            // 2: steer value: 0-1000
       setScopeChannel(3, (int)batteryVoltage);   // 3: battery voltage
       setScopeChannel(4, (int)adc_buffer.batt1); // 4: for battery voltage calibration
-      setScopeChannel(5, (int)rtU_Left.b_hallA); // 5: for verifying battery voltage calibration
-      setScopeChannel(6, (int)rtU_Left.b_hallB); // 6: for board temperature calibration
-      setScopeChannel(7, (int)rtU_Left.b_hallC); // 7: for verifying board temperature calibration
-      setScopeChannel(8, (int)rtU_Right.b_hallA);
-      setScopeChannel(9, (int)rtU_Right.b_hallB);
-      setScopeChannel(10, (int)rtU_Right.b_hallC);
+      setScopeChannel(5, (int)mpu6050.gyrox);    // 5: for verifying battery voltage calibration
+      setScopeChannel(6, (int)mpu6050.accx);     // 6: for board temperature calibration
+      setScopeChannel(7, (int)mpu6050.cfanglex); // 7: for verifying board temperature calibration
     }
 
     // ####### POWEROFF BY POWER-BUTTON #######
@@ -337,4 +343,11 @@ void set_speed(int v)
 void update_timeout()
 {
   inactivity_timeout_counter = 0;
+}
+
+void set_angle(double gyrox, double accx, double cfangle)
+{
+  mpu6050.gyrox = gyrox;
+  mpu6050.accx = accx;
+  mpu6050.cfanglex = cfangle;
 }
