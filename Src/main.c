@@ -24,6 +24,7 @@
 #include "setup.h"
 #include "config.h"
 #include "uart.h"
+#include "pid.h"
 
 // ###############################################################################
 #include "BLDC_controller.h" /* Model's header file */
@@ -70,6 +71,10 @@ typedef struct
 } MPU6050;
 
 volatile MPU6050 mpu6050;
+
+PID_Control pid;
+double pidout;
+double pidset = 0.05;
 
 uint8_t button1, button2;
 
@@ -175,6 +180,8 @@ int main(void)
   ADC_ExternalTrigConvCtrl(ADC1, ENABLE);
   ADC_SoftwareStartConvCtrl(ADC2, ENABLE);
 
+  pid_init(&pid, &mpu6050.accx, &pidout, &pidset, 5, 0, 0);
+
   // ###############################################################################
 
   /* Set BLDC controller parameters */
@@ -227,6 +234,8 @@ int main(void)
 
     uart_handle_command();
 
+    pid_compute(&pid);
+
     cmd1 = CLAMP((int16_t)command.steer, -1000, 1000);
     cmd2 = CLAMP((int16_t)command.speed, -1000, 1000);
 
@@ -235,8 +244,8 @@ int main(void)
     speed = speed * (1.0 - FILTER) + cmd2 * FILTER;
 
     // ####### MIXER #######
-    speedR = CLAMP(speed * local_speed_coefficent + steer * local_steer_coefficent, -1000, 1000);
-    speedL = CLAMP(speed * local_speed_coefficent - steer * local_steer_coefficent, -1000, 1000);
+    speedR = CLAMP(pidout + speed * local_speed_coefficent + steer * local_steer_coefficent, -1000, 1000);
+    speedL = CLAMP(pidout + speed * local_speed_coefficent - steer * local_steer_coefficent, -1000, 1000);
 
     // ####### SET OUTPUTS #######
     if ((speedL < lastSpeedL + 50 && speedL > lastSpeedL - 50) && (speedR < lastSpeedR + 50 && speedR > lastSpeedR - 50))
@@ -255,14 +264,15 @@ int main(void)
       board_temp_deg_c = ((float)TEMP_CAL_HIGH_DEG_C - (float)TEMP_CAL_LOW_DEG_C) / ((float)TEMP_CAL_HIGH_ADC - (float)TEMP_CAL_LOW_ADC) * (board_temp_adc_filtered - (float)TEMP_CAL_LOW_ADC) + (float)TEMP_CAL_LOW_DEG_C;
 
       // ####### DEBUG SERIAL OUT #######
-      setScopeChannel(0, (int)speedR);           // 0: output speed: 0-1000
-      setScopeChannel(1, (int)speedL);           // 1: output speed: 0-1000
-      setScopeChannel(2, (int)steer);            // 2: steer value: 0-1000
-      setScopeChannel(3, (int)batteryVoltage);   // 3: battery voltage
-      setScopeChannel(4, (int)adc_buffer.batt1); // 4: for battery voltage calibration
-      setScopeChannel(5, (int)mpu6050.gyrox);    // 5: for verifying battery voltage calibration
-      setScopeChannel(6, (int)mpu6050.accx);     // 6: for board temperature calibration
-      setScopeChannel(7, (int)mpu6050.cfanglex); // 7: for verifying board temperature calibration
+      setScopeChannel(0, (int)speedR);                   // 0: output speed: 0-1000
+      setScopeChannel(1, (int)speedL);                   // 1: output speed: 0-1000
+      setScopeChannel(2, (int)steer);                    // 2: steer value: 0-1000
+      setScopeChannel(3, (int)batteryVoltage);           // 3: battery voltage
+      setScopeChannel(4, (int)adc_buffer.batt1);         // 4: for battery voltage calibration
+      setScopeChannel(5, (int)(mpu6050.gyrox * 100));    // 5: for verifying battery voltage calibration
+      setScopeChannel(6, (int)(mpu6050.accx * 100));     // 6: for board temperature calibration
+      setScopeChannel(7, (int)(mpu6050.cfanglex * 100)); // 7: for verifying board temperature calibration
+      setScopeChannel(8, (int)(pidout * 100));
     }
 
     // ####### POWEROFF BY POWER-BUTTON #######

@@ -24,17 +24,17 @@
 
 #include "config.h"
 
-#define 	USART_IT_PE   	USART_INT_PERR
-#define 	USART_IT_TXE   	USART_INT_TDE
-#define 	USART_IT_TC   	USART_INT_TRAC
-#define 	USART_IT_RXNE   USART_INT_RDNE
-#define 	USART_IT_IDLE   USART_INT_IDLEF
-#define 	USART_IT_LBD   	USART_INT_LBDF
-#define 	USART_IT_CTS   	USART_INT_CTSF
-#define 	USART_IT_ERR   	USART_INT_ERR
-#define 	USART_IT_ORE   	USART_INT_ORERR
-#define 	USART_IT_NE   	USART_INT_NERR
-#define 	USART_IT_FE   	USART_INT_FERR
+#define USART_IT_PE USART_INT_PERR
+#define USART_IT_TXE USART_INT_TDE
+#define USART_IT_TC USART_INT_TRAC
+#define USART_IT_RXNE USART_INT_RDNE
+#define USART_IT_IDLE USART_INT_IDLEF
+#define USART_IT_LBD USART_INT_LBDF
+#define USART_IT_CTS USART_INT_CTSF
+#define USART_IT_ERR USART_INT_ERR
+#define USART_IT_ORE USART_INT_ORERR
+#define USART_IT_NE USART_INT_NERR
+#define USART_IT_FE USART_INT_FERR
 
 #define NL "\n\r"
 
@@ -46,7 +46,8 @@ volatile char uart_txBuff[UART_TX_BUF_SIZE];
 
 char uart_command[UART_RX_BUF_SIZE];
 
-typedef struct {
+typedef struct
+{
 	volatile char *const buffer;
 	uint8_t head;
 	uint8_t tail;
