@@ -74,7 +74,7 @@ volatile MPU6050 mpu6050;
 
 PID_Control pid;
 double pidout;
-double pidset = 0.05;
+double pidset = -1;
 
 uint8_t button1, button2;
 
@@ -83,6 +83,7 @@ int speed; // global variable for speed. -1000 to 1000
 
 float local_speed_coefficent;
 float local_steer_coefficent;
+float local_pid_coefficient;
 
 extern volatile int pwml; // global variable for pwm left. -1000 to 1000
 extern volatile int pwmr; // global variable for pwm right. -1000 to 1000
@@ -180,7 +181,7 @@ int main(void)
   ADC_ExternalTrigConvCtrl(ADC1, ENABLE);
   ADC_SoftwareStartConvCtrl(ADC2, ENABLE);
 
-  pid_init(&pid, &mpu6050.accx, &pidout, &pidset, 5, 0, 0);
+  pid_init(&pid, &mpu6050.cfanglex, &pidout, &pidset, 7, 0.1, 0);
 
   // ###############################################################################
 
@@ -223,6 +224,7 @@ int main(void)
   int lastSpeedL = 0, lastSpeedR = 0;
   local_speed_coefficent = SPEED_COEFFICIENT;
   local_steer_coefficent = STEER_COEFFICIENT;
+  local_pid_coefficient = PID_COEFFICIENT;
   float board_temp_adc_filtered = (float)adc_buffer.temp;
   float board_temp_deg_c;
 
@@ -244,8 +246,8 @@ int main(void)
     speed = speed * (1.0 - FILTER) + cmd2 * FILTER;
 
     // ####### MIXER #######
-    speedR = CLAMP(pidout + speed * local_speed_coefficent + steer * local_steer_coefficent, -1000, 1000);
-    speedL = CLAMP(pidout + speed * local_speed_coefficent - steer * local_steer_coefficent, -1000, 1000);
+    speedR = CLAMP(pidout * local_pid_coefficient + speed * local_speed_coefficent + steer * local_steer_coefficent, -1000, 1000);
+    speedL = CLAMP(pidout * local_pid_coefficient + speed * local_speed_coefficent - steer * local_steer_coefficent, -1000, 1000);
 
     // ####### SET OUTPUTS #######
     if ((speedL < lastSpeedL + 50 && speedL > lastSpeedL - 50) && (speedR < lastSpeedR + 50 && speedR > lastSpeedR - 50))

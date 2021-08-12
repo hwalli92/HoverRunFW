@@ -17,6 +17,8 @@ typedef struct
 	double last_time;
 	double last_angle;
 
+	double max_pid;
+
 } PID_Control;
 
 void pid_init(PID_Control *PID, double *pidin, double *pidout, double *pidsetpt, double kp, double ki, double kd);

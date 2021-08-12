@@ -11,6 +11,7 @@ void pid_init(PID_Control *PID, double *pidin, double *pidout, double *pidsetpt,
 	PID->iterm = 0;
 	PID->last_angle = 0;
 	PID->last_time = 0;
+	PID->max_pid = 500;
 }
 
 void pid_compute(PID_Control *PID)
@@ -29,7 +30,12 @@ void pid_compute(PID_Control *PID)
 
 	output = (PID->kp * error) + (PID->ki * PID->iterm) + (PID->kd * dterm);
 
-	*PID->output = output;
+	if (output > PID->max_pid)
+		*PID->output = PID->max_pid;
+	else if (output < -PID->max_pid)
+		*PID->output = -PID->max_pid;
+	else
+		*PID->output = output;
 
 	PID->last_time = this_time;
 	PID->last_angle = input;
