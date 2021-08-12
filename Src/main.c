@@ -24,7 +24,7 @@
 #include "setup.h"
 #include "config.h"
 #include "uart.h"
-#include "i2c.h"
+#include "mpu.h"
 
 // ###############################################################################
 #include "BLDC_controller.h" /* Model's header file */

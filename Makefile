@@ -36,6 +36,7 @@ Src/bldc.c \
 Src/comms.c \
 Src/uart.c \
 Src/i2c.c \
+Src/mpu.c \
 Src/at32f4xx_it.c \
 Src/BLDC_controller_data.c \
 Src/BLDC_controller.c \
