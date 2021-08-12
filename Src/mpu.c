@@ -11,9 +11,9 @@ uint8_t MPU6050_Init()
 
     I2C2_Write(MPU6050_ADDR, PWR_MGMT_1_REG, 0x80);
 
-    delay(100);
+    delay(50);
 
-    I2C2_Write(MPU6050_ADDR, PWR_MGMT_1_REG, 0x00);
+    I2C2_Write(MPU6050_ADDR, PWR_MGMT_1_REG, 0x01);
 
     I2C2_Write(MPU6050_ADDR, SMPLRT_DIV_REG, 0x07);
 

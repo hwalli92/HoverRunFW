@@ -157,7 +157,6 @@ int main(void)
   SystemClock_Config();
   RCC_AHBPeriphClockCmd(RCC_AHBPERIPH_DMA1, DISABLE);
 
-  I2C2_Init();
   MX_GPIO_Init();
   MX_TIM_Init();
   MX_ADC1_Init();
@@ -165,6 +164,7 @@ int main(void)
 
   uart_initialize();
 
+  I2C2_Init();
   uint8_t check;
   check = MPU6050_Init();
 
@@ -226,7 +226,7 @@ int main(void)
     uart_handle_command();
     //MPU6050_AccelRead(&MPUData);
     //MPU6050_GyroRead(&MPUData);
-    MPU6050_Read(&MPUData);
+    //MPU6050_Read(&MPUData);
 
     cmd1 = CLAMP((int16_t)command.steer, -1000, 1000);
     cmd2 = CLAMP((int16_t)command.speed, -1000, 1000);
@@ -261,11 +261,11 @@ int main(void)
       setScopeChannel(2, (int)steer);            // 2: steer value: 0-1000
       setScopeChannel(3, (int)batteryVoltage);   // 3: battery voltage
       setScopeChannel(4, (int)adc_buffer.batt1); // 4: for battery voltage calibration
-      setScopeChannel(5, (int)MPUData.Accel_X);  // 5: for verifying battery voltage calibration
-      setScopeChannel(6, (int)MPUData.Accel_Y);  // 6: for board temperature calibration
-      setScopeChannel(7, (int)MPUData.Accel_Z);  // 7: for verifying board temperature calibration
-      setScopeChannel(8, (int)MPUData.Gyro_X);
-      setScopeChannel(9, (int)MPUData.Gyro_Y);
+      setScopeChannel(5, (int)check);            // 5: for verifying battery voltage calibration
+      setScopeChannel(6, (int)MPUData.Accel_X);  // 6: for board temperature calibration
+      setScopeChannel(7, (int)MPUData.Accel_Y);  // 7: for verifying board temperature calibration
+      setScopeChannel(8, (int)MPUData.Accel_Z);
+      setScopeChannel(9, (int)MPUData.Gyro_X);
       setScopeChannel(10, (int)MPUData.Gyro_Z);
     }
 
