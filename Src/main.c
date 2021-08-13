@@ -163,12 +163,11 @@ int main(void)
   MX_ADC2_Init();
 
   uart_initialize();
+  GPIO_WriteBit(OFF_PORT, OFF_PIN, 1);
 
   I2C2_Init();
   uint8_t check;
   check = MPU6050_Init();
-
-  GPIO_WriteBit(OFF_PORT, OFF_PIN, 1);
 
   ADC_ExternalTrigConvCtrl(ADC1, ENABLE);
   ADC_SoftwareStartConvCtrl(ADC2, ENABLE);

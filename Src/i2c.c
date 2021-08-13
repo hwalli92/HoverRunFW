@@ -3,21 +3,19 @@
 #include "at32f4xx.h"
 #include "i2c.h"
 
-DMA_InitType hdma_i2c2_rx = {0};
-DMA_InitType hdma_i2c2_tx = {0};
-I2C_InitType hi2c2 = {0};
-
-uint8_t gyro_data[6] = {0};
-uint8_t i2cBuffer[2];
+uint8_t buffer[14];
 uint32_t I2C2_Timeout;
 
 void I2C2_Init()
 {
     GPIO_InitType GPIO_I2C_Structure;
     I2C_InitType MPU_I2C_Structure;
+    NVIC_InitType NVIC_I2C_Structure;
+    DMA_InitType DMA_I2C_Structure;
 
     RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_I2C2, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_GPIOB, ENABLE);
+    RCC_AHBPeriphClockCmd(RCC_AHBPERIPH_DMA1, ENABLE);
 
     GPIO_I2C_Structure.GPIO_Pins = GPIO_Pins_10 | GPIO_Pins_11;
     GPIO_I2C_Structure.GPIO_Mode = GPIO_Mode_AF_OD;
@@ -32,95 +30,27 @@ void I2C2_Init()
     MPU_I2C_Structure.I2C_AddrMode = I2C_AddrMode_7bit;
     I2C_Init(I2C2, &MPU_I2C_Structure);
 
-    // RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_I2C2, ENABLE);
-    // RCC_AHBPeriphClockCmd(RCC_AHBPERIPH_DMA1, ENABLE);
+    DMA_Reset(DMA1_Channel5);
 
-    // /* DMA1_Channel4_IRQn interrupt configuration */
-    // NVIC_InitType NVIC_InitStruct = {0};
+    DMA_I2C_Structure.DMA_PeripheralBaseAddr = (uint32_t)0x40005810;
+    DMA_I2C_Structure.DMA_MemoryBaseAddr = (uint32_t)buffer;
+    DMA_I2C_Structure.DMA_MTOM = DMA_MEMTOMEM_DISABLE;
+    DMA_I2C_Structure.DMA_Mode = DMA_MODE_NORMAL;
+    DMA_I2C_Structure.DMA_Priority = DMA_PRIORITY_MEDIUM;
+    DMA_I2C_Structure.DMA_Direction = DMA_DIR_PERIPHERALSRC;
+    DMA_I2C_Structure.DMA_BufferSize = 14;
+    DMA_I2C_Structure.DMA_PeripheralInc = DMA_PERIPHERALINC_DISABLE;
+    DMA_I2C_Structure.DMA_MemoryInc = DMA_MEMORYINC_DISABLE;
+    DMA_I2C_Structure.DMA_PeripheralDataWidth = DMA_PERIPHERALDATAWIDTH_BYTE;
+    DMA_I2C_Structure.DMA_MemoryDataWidth = DMA_MEMORYDATAWIDTH_BYTE;
+    DMA_Init(DMA1_Channel5, &DMA_I2C_Structure);
+    DMA_INTConfig(DMA1_Channel5, DMA_INT_TC, ENABLE);
 
-    // NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-    // NVIC_InitStruct.NVIC_IRQChannel = DMA1_Channel4_IRQn;
-    // NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 1;
-    // NVIC_InitStruct.NVIC_IRQChannelSubPriority = 4;
-    // NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
-    // NVIC_Init(&NVIC_InitStruct);
-
-    // /* DMA1_Channel5_IRQn interrupt configuration */
-    // NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-    // NVIC_InitStruct.NVIC_IRQChannel = DMA1_Channel5_IRQn;
-    // NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 1;
-    // NVIC_InitStruct.NVIC_IRQChannelSubPriority = 3;
-    // NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
-    // NVIC_Init(&NVIC_InitStruct);
-
-    // hi2c2.I2C_BitRate = 100000;
-    // hi2c2.I2C_FmDutyCycle = I2C_FmDutyCycle_2_1;
-    // hi2c2.I2C_OwnAddr1 = 0;
-    // hi2c2.I2C_AddrMode = I2C_AddrMode_7bit;
-    // I2C_Init(I2C2, &hi2c2);
-
-    // GPIO_InitType GPIO_InitStruct = {0};
-
-    // RCC_AHBPeriphClockCmd(RCC_AHBPERIPH_DMA1, ENABLE);
-    // RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_GPIOB, ENABLE);
-    // /* USER CODE BEGIN I2C2_MspInit 0 */
-
-    // /* USER CODE END I2C2_MspInit 0 */
-
-    // /**I2C2 GPIO Configuration
-    // PB10     ------> I2C2_SCL
-    // PB11     ------> I2C2_SDA
-    // */
-    // GPIO_InitStruct.GPIO_Pins = GPIO_Pins_10 | GPIO_Pins_11;
-    // GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF_OD;
-    // GPIO_InitStruct.GPIO_MaxSpeed = GPIO_MaxSpeed_50MHz;
-    // GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-    // /* Peripheral clock enable */
-    // RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_I2C2, ENABLE);
-
-    // /* Peripheral DMA init*/
-
-    // hdma_i2c2_rx.DMA_Direction = DMA_DIR_PERIPHERALSRC;
-    // hdma_i2c2_rx.DMA_PeripheralInc = DMA_PERIPHERALINC_DISABLE;
-    // hdma_i2c2_rx.DMA_MemoryInc = DMA_MEMORYINC_ENABLE;
-    // hdma_i2c2_rx.DMA_PeripheralDataWidth = DMA_PERIPHERALDATAWIDTH_BYTE;
-    // hdma_i2c2_rx.DMA_MemoryDataWidth = DMA_MEMORYDATAWIDTH_BYTE;
-    // hdma_i2c2_rx.DMA_Mode = DMA_MODE_NORMAL;
-    // hdma_i2c2_rx.DMA_Priority = DMA_PRIORITY_MEDIUM;
-    // DMA_Init(DMA1_Channel5, &hdma_i2c2_rx);
-
-    // //__HAL_LINKDMA(&hi2c2, hdmarx, hdma_i2c2_rx);
-
-    // hdma_i2c2_tx.DMA_Direction = DMA_DIR_PERIPHERALDST;
-    // hdma_i2c2_tx.DMA_PeripheralInc = DMA_PERIPHERALINC_DISABLE;
-    // hdma_i2c2_tx.DMA_MemoryInc = DMA_MEMORYINC_ENABLE;
-    // hdma_i2c2_tx.DMA_PeripheralDataWidth = DMA_PERIPHERALDATAWIDTH_BYTE;
-    // hdma_i2c2_tx.DMA_MemoryDataWidth = DMA_MEMORYDATAWIDTH_BYTE;
-    // hdma_i2c2_tx.DMA_Mode = DMA_MODE_NORMAL;
-    // hdma_i2c2_tx.DMA_Priority = DMA_PRIORITY_MEDIUM;
-    // DMA_Init(DMA1_Channel4, &hdma_i2c2_tx);
-
-    // //__HAL_LINKDMA(&hi2c2, hdmatx, hdma_i2c2_tx);
-
-    // /* Peripheral interrupt init */
-
-    // NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
-    // NVIC_InitStruct.NVIC_IRQChannel = I2C2_EV_IRQn;
-    // NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
-    // NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;
-    // NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
-    // NVIC_Init(&NVIC_InitStruct);
-
-    // NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
-    // NVIC_InitStruct.NVIC_IRQChannel = I2C2_ER_IRQn;
-    // NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
-    // NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;
-    // NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
-    // NVIC_Init(&NVIC_InitStruct);
-    // /* USER CODE BEGIN I2C2_MspInit 1 */
-
-    // /* USER CODE END I2C2_MspInit 1 */
+    NVIC_I2C_Structure.NVIC_IRQChannel = DMA1_Channel5_IRQn;
+    NVIC_I2C_Structure.NVIC_IRQChannelPreemptionPriority = 0x05;
+    NVIC_I2C_Structure.NVIC_IRQChannelSubPriority = 0x05;
+    NVIC_I2C_Structure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_I2C_Structure);
 }
 
 uint8_t I2C2_Read(uint8_t devaddress, uint8_t memregister)
