@@ -223,8 +223,7 @@ int main(void)
     delay(DELAY_IN_MAIN_LOOP); //delay in ms
 
     uart_handle_command();
-    //MPU6050_AccelRead(&MPUData);
-    //MPU6050_GyroRead(&MPUData);
+    //I2C2_DMA_Read(MPU6050_ADDR, ACCEL_XOUT_H_REG);
     //MPU6050_Read(&MPUData);
 
     cmd1 = CLAMP((int16_t)command.steer, -1000, 1000);

@@ -53,6 +53,61 @@ void I2C2_Init()
     NVIC_Init(&NVIC_I2C_Structure);
 }
 
+void DMA1_Channel5_IRQHandler(void)
+{
+    if (DMA_GetFlagStatus(DMA1_FLAG_TC5))
+    {
+        DMA_ClearFlag(DMA1_FLAG_TC5);
+
+        I2C_DMACmd(I2C2, DISABLE);
+        I2C_GenerateSTOP(I2C2, ENABLE);
+
+        DMA_ChannelEnable(DMA1_Channel5, DISABLE);
+    }
+}
+
+void I2C2_DMA_Read(uint8_t devaddress, uint8_t memregister)
+{
+    DMA_ChannelEnable(DMA1_Channel5, DISABLE);
+
+    DMA_SetCurrDataCounter(DMA1_Channel5, 14);
+
+    while (I2C_GetFlagStatus(I2C2, I2C_FLAG_BUSYF))
+        ;
+
+    I2C_DMALastTransferCmd(I2C2, ENABLE);
+
+    I2C_GenerateSTART(I2C2, ENABLE);
+
+    while (!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_START_GENERATED))
+        ;
+
+    I2C_Send7bitAddress(I2C2, devaddress, I2C_Direction_Transmit);
+
+    while (!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_TRANSMITTER))
+        ;
+
+    I2C_Cmd(I2C2, ENABLE);
+
+    I2C_SendData(I2C2, memregister);
+
+    while (!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_DATA_TRANSMITTED))
+        ;
+
+    I2C_GenerateSTART(I2C2, ENABLE);
+
+    while (!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_START_GENERATED))
+        ;
+
+    I2C_Send7bitAddress(I2C2, devaddress, I2C_Direction_Receive);
+
+    while (!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_ADDRESS_WITH_RECEIVER))
+        ;
+
+    DMA_ChannelEnable(DMA1_Channel5, ENABLE);
+    I2C_DMACmd(I2C2, ENABLE);
+}
+
 uint8_t I2C2_Read(uint8_t devaddress, uint8_t memregister)
 {
     uint8_t received_data;

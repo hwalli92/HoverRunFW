@@ -7,6 +7,7 @@
 #define I2C2_TIMEOUT 20000
 
 void I2C2_Init();
+void I2C2_DMA_Read(uint8_t devaddress, uint8_t memregister);
 uint8_t I2C2_Read(uint8_t devaddress, uint8_t memregister);
 void I2C2_ReadMulti(uint8_t devaddress, uint8_t memregister, uint8_t *data, uint16_t count);
 void I2C2_Write(uint8_t devaddress, uint8_t memregister, uint8_t data);
