@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "uart.h"
 
@@ -125,6 +126,15 @@ void uart_handle_command()
 			{
 				uart_put_string("checksum error" NL);
 			}
+		}
+		else if (startswith(uart_command, "pid"))
+		{
+			update_timeout();
+			char pidstring[20];
+			sscanf(uart_command, "pid %s", &pidstring);
+			double pidvalue = atof(pidstring);
+
+			set_pidvalue(pidvalue);
 		}
 		else if (!strcmp(uart_command, "start"))
 		{
