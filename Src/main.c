@@ -68,8 +68,9 @@ uint8_t button1, button2;
 int steer; // global variable for steering. -1000 to 1000
 int speed; // global variable for speed. -1000 to 1000
 
-float local_speed_coefficent;
-float local_steer_coefficent;
+float local_speed_coefficient;
+float local_steer_coefficient;
+float local_pid_coefficient;
 
 extern volatile int pwml; // global variable for pwm left. -1000 to 1000
 extern volatile int pwmr; // global variable for pwm right. -1000 to 1000
@@ -206,8 +207,10 @@ int main(void)
 
   int speedL = 0, speedR = 0;
   int lastSpeedL = 0, lastSpeedR = 0;
-  local_speed_coefficent = SPEED_COEFFICIENT;
-  local_steer_coefficent = STEER_COEFFICIENT;
+  local_speed_coefficient = SPEED_COEFFICIENT;
+  local_steer_coefficient = STEER_COEFFICIENT;
+  local_pid_coefficient = PID_COEFFICIENT;
+
   float board_temp_adc_filtered = (float)adc_buffer.temp;
   float board_temp_deg_c;
 
@@ -227,8 +230,8 @@ int main(void)
     speed = speed * (1.0 - FILTER) + cmd2 * FILTER;
 
     // ####### MIXER #######
-    speedR = CLAMP(speed * local_speed_coefficent + steer * local_steer_coefficent, -1000, 1000);
-    speedL = CLAMP(speed * local_speed_coefficent - steer * local_steer_coefficent, -1000, 1000);
+    speedR = CLAMP(command.pidvalue * local_pid_coefficient + speed * local_speed_coefficient + steer * local_steer_coefficient, -1000, 1000);
+    speedL = CLAMP(command.pidvalue * local_pid_coefficient + speed * local_speed_coefficient - steer * local_steer_coefficient, -1000, 1000);
 
     // ####### SET OUTPUTS #######
     if ((speedL < lastSpeedL + 50 && speedL > lastSpeedL - 50) && (speedR < lastSpeedR + 50 && speedR > lastSpeedR - 50))

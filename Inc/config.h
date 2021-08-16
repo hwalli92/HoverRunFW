@@ -84,6 +84,7 @@
 #define FILTER 0.1            // lower value == softer filter. do not use values <0.01, you will get float precision issues.
 #define SPEED_COEFFICIENT 0.6 // higher value == stronger. 0.0 to ~2.0?
 #define STEER_COEFFICIENT 0.5 // higher value == stronger. if you do not want any steering, set it to 0.0; 0.0 to 1.0
+#define PID_COEFFICIENT 0.5
 //#define INVERT_R_DIRECTION
 //#define INVERT_L_DIRECTION
 #define BEEPS_BACKWARD 0 // 0 or 1
