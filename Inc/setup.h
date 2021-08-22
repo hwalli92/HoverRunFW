@@ -39,4 +39,5 @@ void set_speed(int v);
 void poweroff();
 void update_timeout();
 void set_angle(double gyrox, double accx, double cfangle);
+void set_pid_params(double kp, double ki, double kd);
 uint32_t millis(void);

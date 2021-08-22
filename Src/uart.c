@@ -133,15 +133,23 @@ void uart_handle_command()
 			char strgyrox[20];
 			char straccx[20];
 			char strcfanglex[20];
-			//char out[128];
 			sscanf(uart_command, "mpu %s %s %s", &strgyrox, &straccx, &strcfanglex);
 			double gyrox = atof(strgyrox);
 			double accx = atof(straccx);
 			double cfanglex = atof(strcfanglex);
-			// sprintf(out, "setting motors from mpu speed: %f steer: %f" NL, gyrox,
-			// 		accx);
-			// uart_put_string(out);
 			set_angle(gyrox, accx, cfanglex);
+		}
+		else if (startswith(uart_command, "pid"))
+		{
+			update_timeout();
+			char skp[20];
+			char ski[20];
+			char skd[20];
+			sscanf(uart_command, "pid %s %s %s", &skp, &ski, &skd);
+			double kp = atof(skp);
+			double ki = atof(ski);
+			double kd = atof(skd);
+			set_pid_params(kp, ki, kd);
 		}
 		else if (!strcmp(uart_command, "stop"))
 		{

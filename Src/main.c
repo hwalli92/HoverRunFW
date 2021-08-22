@@ -181,7 +181,7 @@ int main(void)
   ADC_ExternalTrigConvCtrl(ADC1, ENABLE);
   ADC_SoftwareStartConvCtrl(ADC2, ENABLE);
 
-  pid_init(&pid, &mpu6050.cfanglex, &pidout, &pidset, 7, 0.1, 0);
+  pid_init(&pid, &mpu6050.cfanglex, &pidout, &pidset, 7, 0, 0);
 
   // ###############################################################################
 
@@ -266,14 +266,14 @@ int main(void)
       board_temp_deg_c = ((float)TEMP_CAL_HIGH_DEG_C - (float)TEMP_CAL_LOW_DEG_C) / ((float)TEMP_CAL_HIGH_ADC - (float)TEMP_CAL_LOW_ADC) * (board_temp_adc_filtered - (float)TEMP_CAL_LOW_ADC) + (float)TEMP_CAL_LOW_DEG_C;
 
       // ####### DEBUG SERIAL OUT #######
-      setScopeChannel(0, (int)speedR);                   // 0: output speed: 0-1000
-      setScopeChannel(1, (int)speedL);                   // 1: output speed: 0-1000
-      setScopeChannel(2, (int)steer);                    // 2: steer value: 0-1000
-      setScopeChannel(3, (int)batteryVoltage);           // 3: battery voltage
-      setScopeChannel(4, (int)adc_buffer.batt1);         // 4: for battery voltage calibration
-      setScopeChannel(5, (int)(mpu6050.gyrox * 100));    // 5: for verifying battery voltage calibration
-      setScopeChannel(6, (int)(mpu6050.accx * 100));     // 6: for board temperature calibration
-      setScopeChannel(7, (int)(mpu6050.cfanglex * 100)); // 7: for verifying board temperature calibration
+      setScopeChannel(0, (int)speedR);           // 0: output speed: 0-1000
+      setScopeChannel(1, (int)speedL);           // 1: output speed: 0-1000
+      setScopeChannel(2, (int)steer);            // 2: steer value: 0-1000
+      setScopeChannel(3, (int)batteryVoltage);   // 3: battery voltage
+      setScopeChannel(4, (int)adc_buffer.batt1); // 4: for battery voltage calibration
+      setScopeChannel(5, (int)(pid.kp));         // 5: for verifying battery voltage calibration
+      setScopeChannel(6, (int)(pid.ki * 100));   // 6: for board temperature calibration
+      setScopeChannel(7, (int)(pid.kd * 100));   // 7: for verifying board temperature calibration
       setScopeChannel(8, (int)(pidout * 100));
     }
 
@@ -362,4 +362,9 @@ void set_angle(double gyrox, double accx, double cfangle)
   mpu6050.gyrox = gyrox;
   mpu6050.accx = accx;
   mpu6050.cfanglex = cfangle;
+}
+
+void set_pid_params(double kp, double ki, double kd)
+{
+  set_tuning_params(&pid, kp, ki, kd);
 }
