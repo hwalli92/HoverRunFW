@@ -124,6 +124,9 @@
 #define CHARGER_PIN GPIO_Pins_12
 #define CHARGER_PORT GPIOA
 
+#define MPUINT_PIN GPIO_Pins_2
+#define MPUINT_PORT GPIOB
+
 #define DELAY_TIM_FREQUENCY_US 1000000
 
 #define MOTOR_AMP_CONV_DC_AMP 0.02 // A per bit (12) on ADC.

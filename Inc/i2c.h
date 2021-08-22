@@ -6,6 +6,8 @@
 
 #define I2C2_TIMEOUT 20000
 
+uint16_t mpu_data[14];
+
 void I2C2_Init();
 void I2C2_DMA_Read(uint8_t devaddress, uint8_t memregister);
 uint8_t I2C2_Read(uint8_t devaddress, uint8_t memregister);

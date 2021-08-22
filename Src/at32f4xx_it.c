@@ -11,6 +11,7 @@
 #include "at32f4xx_it.h"
 #include "config.h"
 #include "setup.h"
+#include "mpu.h"
 
 volatile uint32_t systick_counter;
 
@@ -108,4 +109,14 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   systick_counter++;
+}
+
+void EXTI2_IRQHandler(void)
+{
+  if (EXTI_GetIntStatus(EXTI_Line2) != RESET)
+  {
+    pulse_buzzer();
+    I2C2_DMA_Read(MPU6050_ADDR, ACCEL_XOUT_H_REG);
+    EXTI_ClearIntPendingBit(EXTI_Line2);
+  }
 }

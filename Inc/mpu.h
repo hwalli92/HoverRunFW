@@ -5,6 +5,8 @@
 
 #define RAD_TO_DEG 57.295779513082320876798154814105
 
+#define MPU6050_ADDR 0x69
+
 #define WHO_AM_I_REG 0x75
 #define PWR_MGMT_1_REG 0x6B
 #define RA_CONFIG 0x1A
@@ -14,7 +16,8 @@
 #define TEMP_OUT_H_REG 0x41
 #define GYRO_CONFIG_REG 0x1B
 #define GYRO_XOUT_H_REG 0x43
-#define MPU6050_ADDR 0x69
+#define INT_PIN_CFG 0x37
+#define INT_PIN_EN 0x38
 
 typedef struct
 {

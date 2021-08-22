@@ -167,7 +167,7 @@ int main(void)
 
   I2C2_Init();
   uint8_t check;
-  check = MPU6050_Init();
+  // check = MPU6050_Init();
 
   ADC_ExternalTrigConvCtrl(ADC1, ENABLE);
   ADC_SoftwareStartConvCtrl(ADC2, ENABLE);
@@ -345,4 +345,13 @@ void set_speed(int v)
 void update_timeout()
 {
   inactivity_timeout_counter = 0;
+}
+
+void pulse_buzzer()
+{
+  for (int i = 8; i >= 0; i--)
+  {
+    GPIO_WriteBit(LLED_PORT, LLED_PIN, i & 1);
+    GPIO_WriteBit(RLED_PORT, RLED_PIN, i & 1);
+  }
 }

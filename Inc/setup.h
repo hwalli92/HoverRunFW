@@ -39,3 +39,4 @@ void set_speed(int v);
 void poweroff();
 void update_timeout();
 void delay(uint32_t millis);
+void pulse_buzzer();

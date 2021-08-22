@@ -3,7 +3,7 @@
 #include "at32f4xx.h"
 #include "i2c.h"
 
-uint8_t buffer[14];
+uint8_t i2c_rx_Buffer[14];
 uint32_t I2C2_Timeout;
 
 void I2C2_Init()
@@ -12,6 +12,7 @@ void I2C2_Init()
     I2C_InitType MPU_I2C_Structure;
     NVIC_InitType NVIC_I2C_Structure;
     DMA_InitType DMA_I2C_Structure;
+    EXTI_InitType EXTI_I2C_Structure;
 
     RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_I2C2, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_GPIOB, ENABLE);
@@ -21,6 +22,13 @@ void I2C2_Init()
     GPIO_I2C_Structure.GPIO_Mode = GPIO_Mode_AF_OD;
     GPIO_I2C_Structure.GPIO_MaxSpeed = GPIO_MaxSpeed_50MHz;
     GPIO_Init(GPIOB, &GPIO_I2C_Structure);
+
+    GPIO_I2C_Structure.GPIO_Pins = GPIO_Pins_2;
+    GPIO_I2C_Structure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_I2C_Structure.GPIO_MaxSpeed = GPIO_MaxSpeed_50MHz;
+    GPIO_Init(GPIOB, &GPIO_I2C_Structure);
+
+    GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinsSource2);
 
     MPU_I2C_Structure.I2C_BitRate = 400000;
     MPU_I2C_Structure.I2C_Mode = I2C_Mode_I2CDevice;
@@ -33,7 +41,7 @@ void I2C2_Init()
     DMA_Reset(DMA1_Channel5);
 
     DMA_I2C_Structure.DMA_PeripheralBaseAddr = (uint32_t)0x40005810;
-    DMA_I2C_Structure.DMA_MemoryBaseAddr = (uint32_t)buffer;
+    DMA_I2C_Structure.DMA_MemoryBaseAddr = (uint32_t)i2c_rx_Buffer;
     DMA_I2C_Structure.DMA_MTOM = DMA_MEMTOMEM_DISABLE;
     DMA_I2C_Structure.DMA_Mode = DMA_MODE_NORMAL;
     DMA_I2C_Structure.DMA_Priority = DMA_PRIORITY_MEDIUM;
@@ -51,6 +59,25 @@ void I2C2_Init()
     NVIC_I2C_Structure.NVIC_IRQChannelSubPriority = 0x05;
     NVIC_I2C_Structure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_I2C_Structure);
+
+    GPIO_I2C_Structure.GPIO_Pins = GPIO_Pins_2;
+    GPIO_I2C_Structure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_I2C_Structure.GPIO_MaxSpeed = GPIO_MaxSpeed_50MHz;
+    GPIO_Init(GPIOB, &GPIO_I2C_Structure);
+
+    GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinsSource2);
+
+    EXTI_I2C_Structure.EXTI_Line = EXTI_Line2;
+    EXTI_I2C_Structure.EXTI_Mode = EXTI_Mode_Interrupt;
+    EXTI_I2C_Structure.EXTI_Trigger = EXTI_Trigger_Rising;
+    EXTI_I2C_Structure.EXTI_LineEnable = ENABLE;
+    EXTI_Init(&EXTI_I2C_Structure);
+
+    NVIC_I2C_Structure.NVIC_IRQChannel = EXTI2_IRQn;
+    NVIC_I2C_Structure.NVIC_IRQChannelPreemptionPriority = 1;
+    NVIC_I2C_Structure.NVIC_IRQChannelSubPriority = 1;
+    NVIC_I2C_Structure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_I2C_Structure);
 }
 
 void DMA1_Channel5_IRQHandler(void)
@@ -63,6 +90,11 @@ void DMA1_Channel5_IRQHandler(void)
         I2C_GenerateSTOP(I2C2, ENABLE);
 
         DMA_ChannelEnable(DMA1_Channel5, DISABLE);
+
+        for (int i = 0; i < 7; i++)
+        {
+            mpu_data[i] = (int16_t)(i2c_rx_Buffer[2 * i] << 8 | i2c_rx_Buffer[2 * i + 1]);
+        }
     }
 }
 
