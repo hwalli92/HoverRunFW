@@ -10,7 +10,7 @@ void pid_init(PID_Control *PID, double *pidin, double *pidout, double *pidsetpt,
 	PID->kd = kd;
 	PID->iterm = 0;
 	PID->last_angle = 0;
-	PID->last_time = 0;
+	PID->last_time = NAN;
 	PID->max_pid = 500;
 }
 
@@ -19,14 +19,22 @@ void pid_compute(PID_Control *PID)
 	double this_time = millis();
 	double input = *PID->input;
 	double output;
+	double dt;
 
-	double deltat = this_time - PID->last_time;
+	if (isnan(PID->last_time))
+	{
+		dt = 1e-16;
+	}
+	else
+	{
+		dt = this_time - PID->last_time;
+	}
 
 	double error = *PID->setpoint - input;
 
-	PID->iterm += deltat * error;
+	PID->iterm += dt * error;
 
-	double dterm = (PID->last_angle - input) * deltat;
+	double dterm = (PID->last_angle - input) / dt;
 
 	output = (PID->kp * error) + (PID->ki * PID->iterm) + (PID->kd * dterm);
 

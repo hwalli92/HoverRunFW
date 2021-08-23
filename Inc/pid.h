@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "setup.h"
+#include "math.h"
 
 typedef struct
 {
