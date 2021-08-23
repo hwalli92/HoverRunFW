@@ -74,7 +74,7 @@ volatile MPU6050 mpu6050;
 
 PID_Control pid;
 double pidout;
-double pidset = -1;
+double pidset = 0;
 
 uint8_t button1, button2;
 
@@ -181,7 +181,7 @@ int main(void)
   ADC_ExternalTrigConvCtrl(ADC1, ENABLE);
   ADC_SoftwareStartConvCtrl(ADC2, ENABLE);
 
-  pid_init(&pid, &mpu6050.cfanglex, &pidout, &pidset, 7, 0, 0);
+  pid_init(&pid, &mpu6050.cfanglex, &pidout, &pidset, 10, 0, 0);
 
   // ###############################################################################
 
