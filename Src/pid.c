@@ -8,10 +8,10 @@ void pid_init(PID_Control *PID, double *pidin, double *pidout, double *pidsetpt,
 	PID->kp = kp;
 	PID->ki = ki;
 	PID->kd = kd;
-	PID->iterm = 0;
-	PID->last_angle = 0;
+	PID->iterm = 0.0;
+	PID->last_angle = 0.0;
 	PID->last_time = NAN;
-	PID->max_pid = 500;
+	PID->max_pid = 100;
 }
 
 void pid_compute(PID_Control *PID)

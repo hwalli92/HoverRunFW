@@ -181,7 +181,7 @@ int main(void)
   ADC_ExternalTrigConvCtrl(ADC1, ENABLE);
   ADC_SoftwareStartConvCtrl(ADC2, ENABLE);
 
-  pid_init(&pid, &mpu6050.cfanglex, &pidout, &pidset, 10, 0, 0);
+  pid_init(&pid, &mpu6050.cfanglex, &pidout, &pidset, 0.5, 0.0, 0.0);
 
   // ###############################################################################
 
@@ -273,8 +273,8 @@ int main(void)
       setScopeChannel(4, (int)adc_buffer.batt1); // 4: for battery voltage calibration
       setScopeChannel(5, (int)(pid.kp));         // 5: for verifying battery voltage calibration
       setScopeChannel(6, (int)(pid.ki * 100));   // 6: for board temperature calibration
-      setScopeChannel(7, (int)(pid.kd * 100));   // 7: for verifying board temperature calibration
-      setScopeChannel(8, (int)(pidout * 100));
+      setScopeChannel(7, (int)(pid.kd));         // 7: for verifying board temperature calibration
+      setScopeChannel(8, (int)(pidout * 10));
     }
 
     // ####### POWEROFF BY POWER-BUTTON #######
