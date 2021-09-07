@@ -11,7 +11,7 @@ void pid_init(PID_Control *PID, double *pidin, double *pidout, double *pidsetpt,
 	PID->iterm = 0.0;
 	PID->last_angle = 0.0;
 	PID->last_time = NAN;
-	PID->max_pid = 100;
+	PID->max_pid = 300;
 }
 
 void pid_compute(PID_Control *PID)

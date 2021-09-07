@@ -181,7 +181,7 @@ int main(void)
   ADC_ExternalTrigConvCtrl(ADC1, ENABLE);
   ADC_SoftwareStartConvCtrl(ADC2, ENABLE);
 
-  pid_init(&pid, &mpu6050.cfanglex, &pidout, &pidset, 0.5, 0.0, 0.0);
+  pid_init(&pid, &mpu6050.cfanglex, &pidout, &pidset, 10.0, 0.0, 0.0);
 
   // ###############################################################################
 
