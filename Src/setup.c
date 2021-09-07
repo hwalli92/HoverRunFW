@@ -54,23 +54,23 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_FLOATING;
   GPIO_InitStruct.GPIO_MaxSpeed = GPIO_MaxSpeed_10MHz;
 
-  GPIO_InitStruct.GPIO_Pins = LEFT_HALL_U_PIN;
-  GPIO_Init(LEFT_HALL_U_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = LEFT_HALL_U_PIN;
+  // GPIO_Init(LEFT_HALL_U_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = LEFT_HALL_V_PIN;
-  GPIO_Init(LEFT_HALL_V_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = LEFT_HALL_V_PIN;
+  // GPIO_Init(LEFT_HALL_V_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = LEFT_HALL_W_PIN;
-  GPIO_Init(LEFT_HALL_W_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = LEFT_HALL_W_PIN;
+  // GPIO_Init(LEFT_HALL_W_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = RIGHT_HALL_U_PIN;
-  GPIO_Init(RIGHT_HALL_U_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = RIGHT_HALL_U_PIN;
+  // GPIO_Init(RIGHT_HALL_U_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = RIGHT_HALL_V_PIN;
-  GPIO_Init(RIGHT_HALL_V_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = RIGHT_HALL_V_PIN;
+  // GPIO_Init(RIGHT_HALL_V_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = RIGHT_HALL_W_PIN;
-  GPIO_Init(RIGHT_HALL_W_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = RIGHT_HALL_W_PIN;
+  // GPIO_Init(RIGHT_HALL_W_PORT, &GPIO_InitStruct);
 
   GPIO_InitStruct.GPIO_Pins = CHARGER_PIN;
   GPIO_Init(CHARGER_PORT, &GPIO_InitStruct);
@@ -93,72 +93,72 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.GPIO_Pins = RLED_PIN;
   GPIO_Init(RLED_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_ANALOG;
+  // GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_ANALOG;
 
-  GPIO_InitStruct.GPIO_Pins = LEFT_DC_CUR_PIN;
-  GPIO_Init(LEFT_DC_CUR_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = LEFT_DC_CUR_PIN;
+  // GPIO_Init(LEFT_DC_CUR_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = LEFT_U_CUR_PIN;
-  GPIO_Init(LEFT_U_CUR_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = LEFT_U_CUR_PIN;
+  // GPIO_Init(LEFT_U_CUR_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = LEFT_V_CUR_PIN;
-  GPIO_Init(LEFT_V_CUR_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = LEFT_V_CUR_PIN;
+  // GPIO_Init(LEFT_V_CUR_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = RIGHT_DC_CUR_PIN;
-  GPIO_Init(RIGHT_DC_CUR_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = RIGHT_DC_CUR_PIN;
+  // GPIO_Init(RIGHT_DC_CUR_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = RIGHT_U_CUR_PIN;
-  GPIO_Init(RIGHT_U_CUR_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = RIGHT_U_CUR_PIN;
+  // GPIO_Init(RIGHT_U_CUR_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = RIGHT_V_CUR_PIN;
-  GPIO_Init(RIGHT_V_CUR_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = RIGHT_V_CUR_PIN;
+  // GPIO_Init(RIGHT_V_CUR_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = DCLINK_PIN;
-  GPIO_Init(DCLINK_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = DCLINK_PIN;
+  // GPIO_Init(DCLINK_PORT, &GPIO_InitStruct);
 
-  //Analog in
-  GPIO_InitStruct.GPIO_Pins = GPIO_Pins_3;
-  GPIO_Init(GPIOA, &GPIO_InitStruct);
-  GPIO_InitStruct.GPIO_Pins = GPIO_Pins_2;
-  GPIO_Init(GPIOA, &GPIO_InitStruct);
+  // //Analog in
+  // GPIO_InitStruct.GPIO_Pins = GPIO_Pins_3;
+  // GPIO_Init(GPIOA, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = GPIO_Pins_2;
+  // GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF_PP;
+  // GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF_PP;
 
-  GPIO_InitStruct.GPIO_Pins = LEFT_TIM_UH_PIN;
-  GPIO_Init(LEFT_TIM_UH_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = LEFT_TIM_UH_PIN;
+  // GPIO_Init(LEFT_TIM_UH_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = LEFT_TIM_VH_PIN;
-  GPIO_Init(LEFT_TIM_VH_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = LEFT_TIM_VH_PIN;
+  // GPIO_Init(LEFT_TIM_VH_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = LEFT_TIM_WH_PIN;
-  GPIO_Init(LEFT_TIM_WH_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = LEFT_TIM_WH_PIN;
+  // GPIO_Init(LEFT_TIM_WH_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = LEFT_TIM_UL_PIN;
-  GPIO_Init(LEFT_TIM_UL_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = LEFT_TIM_UL_PIN;
+  // GPIO_Init(LEFT_TIM_UL_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = LEFT_TIM_VL_PIN;
-  GPIO_Init(LEFT_TIM_VL_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = LEFT_TIM_VL_PIN;
+  // GPIO_Init(LEFT_TIM_VL_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = LEFT_TIM_WL_PIN;
-  GPIO_Init(LEFT_TIM_WL_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = LEFT_TIM_WL_PIN;
+  // GPIO_Init(LEFT_TIM_WL_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = RIGHT_TIM_UH_PIN;
-  GPIO_Init(RIGHT_TIM_UH_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = RIGHT_TIM_UH_PIN;
+  // GPIO_Init(RIGHT_TIM_UH_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = RIGHT_TIM_VH_PIN;
-  GPIO_Init(RIGHT_TIM_VH_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = RIGHT_TIM_VH_PIN;
+  // GPIO_Init(RIGHT_TIM_VH_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = RIGHT_TIM_WH_PIN;
-  GPIO_Init(RIGHT_TIM_WH_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = RIGHT_TIM_WH_PIN;
+  // GPIO_Init(RIGHT_TIM_WH_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = RIGHT_TIM_UL_PIN;
-  GPIO_Init(RIGHT_TIM_UL_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = RIGHT_TIM_UL_PIN;
+  // GPIO_Init(RIGHT_TIM_UL_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = RIGHT_TIM_VL_PIN;
-  GPIO_Init(RIGHT_TIM_VL_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = RIGHT_TIM_VL_PIN;
+  // GPIO_Init(RIGHT_TIM_VL_PORT, &GPIO_InitStruct);
 
-  GPIO_InitStruct.GPIO_Pins = RIGHT_TIM_WL_PIN;
-  GPIO_Init(RIGHT_TIM_WL_PORT, &GPIO_InitStruct);
+  // GPIO_InitStruct.GPIO_Pins = RIGHT_TIM_WL_PIN;
+  // GPIO_Init(RIGHT_TIM_WL_PORT, &GPIO_InitStruct);
 }
 
 void MX_TIM_Init(void)

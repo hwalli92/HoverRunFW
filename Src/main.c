@@ -155,7 +155,7 @@ int main(void)
   RCC_AHBPeriphClockCmd(RCC_AHBPERIPH_DMA1, DISABLE);
 
   MX_GPIO_Init();
-  MX_TIM_Init();
+  // MX_TIM_Init();
   MX_ADC1_Init();
   MX_ADC2_Init();
 
@@ -168,25 +168,25 @@ int main(void)
 
   // ###############################################################################
 
-  /* Set BLDC controller parameters */
-  rtP.z_ctrlTypSel = CTRL_TYP_SEL;
-  rtP.b_phaAdvEna = PHASE_ADV_ENA;
+  // /* Set BLDC controller parameters */
+  // rtP.z_ctrlTypSel = CTRL_TYP_SEL;
+  // rtP.b_phaAdvEna = PHASE_ADV_ENA;
 
-  /* Pack LEFT motor data into RTM */
-  rtM_Left->defaultParam = &rtP;
-  rtM_Left->dwork = &rtDW_Left;
-  rtM_Left->inputs = &rtU_Left;
-  rtM_Left->outputs = &rtY_Left;
+  // /* Pack LEFT motor data into RTM */
+  // rtM_Left->defaultParam = &rtP;
+  // rtM_Left->dwork = &rtDW_Left;
+  // rtM_Left->inputs = &rtU_Left;
+  // rtM_Left->outputs = &rtY_Left;
 
-  /* Pack RIGHT motor data into RTM */
-  rtM_Right->defaultParam = &rtP;
-  rtM_Right->dwork = &rtDW_Right;
-  rtM_Right->inputs = &rtU_Right;
-  rtM_Right->outputs = &rtY_Right;
+  // /* Pack RIGHT motor data into RTM */
+  // rtM_Right->defaultParam = &rtP;
+  // rtM_Right->dwork = &rtDW_Right;
+  // rtM_Right->inputs = &rtU_Right;
+  // rtM_Right->outputs = &rtY_Right;
 
-  /* Initialize BLDC controllers */
-  BLDC_controller_initialize(rtM_Left);
-  BLDC_controller_initialize(rtM_Right);
+  // /* Initialize BLDC controllers */
+  // BLDC_controller_initialize(rtM_Left);
+  // BLDC_controller_initialize(rtM_Right);
 
   for (int i = 8; i >= 0; i--)
   {
