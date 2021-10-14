@@ -1,4 +1,4 @@
-# Hover Run hoverboard firmware
+# HoverRun hoverboard firmware
 
 This repo is cleaned up and rebuilt code from thanek's Hoverboard Hack Firmware for some of the newer (V5.1) mainboards with the AT32F413RCT7 controller. Original repo can be found here: https://github.com/thanek/hoverboard-firmware-hack
 
@@ -47,7 +47,10 @@ Only boards with the AT32F413RCT7 controller are supported.
 
 ---
 
-## Hardware (Needs Update)
+## Hardware
+
+Source: https://github.com/thanek/hoverboard-firmware-hack
+
 ![otter](Docs/pinout.png)
 
 ---
@@ -88,12 +91,12 @@ If using OpenOCD, you will probably encounter a problem with it not recognizing 
 
 ---
 
-## Uart Communication (Needs Update)
+## Uart Communication
 
-You can connect to your hoverboard using UART3 to pins L_TX (PB10), L_RX (PB11) and GND on the left sensor board via RaspberryPI or Arduino and use some simple commands:
+You can connect to your hoverboard using UART3 to pins L_TX (PB10), L_RX (PB11) and GND on the left sensor board via RaspberryPI and use some simple commands:
 * ping (you should receive "pong" as a response)
-* status (you should receive basic diagnostic info like speed of motors, battery status, and so on. Response format is like "1:0 2:0 3:54 4:54 5:1491 6:3815 7:1569 8:52")
-* test (makes both motors to turn really slow)
+* status (you should receive basic diagnostic info like speed of motors, battery status, and so on. Response format is like "1:0 2:0 3:54 4:54 5:1491 ...")
+* start (starts both motors with a speed of 100)
 * move [steer] [speed] (sets motor speed and steering)
 * stop (stops both motors)
 * poweroff (shuts the hoverboard down)
