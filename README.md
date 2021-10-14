@@ -1,4 +1,4 @@
-# HoverRun hoverboard firmware
+# HoverRun Hoverboard Firmware
 
 This repo is cleaned up and rebuilt code from thanek's Hoverboard Hack Firmware for some of the newer (V5.1) mainboards with the AT32F413RCT7 controller. Original repo can be found here: https://github.com/thanek/hoverboard-firmware-hack
 
